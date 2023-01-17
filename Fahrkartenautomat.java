@@ -1,10 +1,18 @@
 import java.util.Scanner;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Fahrkartenautomat {
 
     public static void main(String[] args) {
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("DD.MM.uuuu, HH:mm");
+        LocalDateTime localDate = LocalDateTime.now();
+        System.out.printf("\nGuten Tag! Es ist der %s Uhr\n\n", dtf.format(localDate));
 
         HashMap<String, Double> Fahrkarten = new LinkedHashMap<String, Double>();
         Fahrkarten.put("(1) Einzelfahrschein Berlin AB", 2.90);
