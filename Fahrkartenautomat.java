@@ -1,15 +1,29 @@
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Fahrkartenautomat {
 
     public static void main(String[] args) {
+
+        HashMap<String, Double> Fahrkarten = new LinkedHashMap<String, Double>();
+        Fahrkarten.put("(1) Einzelfahrschein Berlin AB", 2.90);
+        Fahrkarten.put("(2) Einzelfahrschein Berlin BC", 3.30);
+        Fahrkarten.put("(3) Einzelfahrschein Berlin ABC", 3.60);
+        Fahrkarten.put("(4) Kurzstrecke", 1.90);
+        Fahrkarten.put("(5) Tageskarte Berlin AB", 8.60);
+        Fahrkarten.put("(6) Tageskarte Berlin BC", 9.00);
+        Fahrkarten.put("(7) Tageskarte Berlin ABC", 9.60);
+        Fahrkarten.put("(8) Kleingruppen-Tageskarte Berlin AB", 23.50);
+        Fahrkarten.put("(9) Kleingruppen-Tageskarte Berlin BC", 24.30);
+        Fahrkarten.put("(10) Kleingruppen-Tageskarte Berlin ABC", 24.90);
 
         boolean abortMain = false;
 
         // loop until stopped manually
         while (!abortMain) {
 
-            double toPay = getPrice();
+            double toPay = getPrice(Fahrkarten);
 
             double payed = makePayment(toPay);
 
@@ -28,41 +42,16 @@ public class Fahrkartenautomat {
         }
     }
 
-    public static double getPrice() {
+    public static double getPrice(HashMap<String, Double> Fahrkarten) {
 
-        String[] tickets = new String[11];
-        tickets[0] = "bezahlen";
-        tickets[1] = "Einzelfahrschein Berlin AB";
-        tickets[2] = "Einzelfahrschein Berlin BC";
-        tickets[3] = "Einzelfahrschein Berlin ABC";
-        tickets[4] = "Kurzstrecke";
-        tickets[5] = "Tageskarte Berlin AB";
-        tickets[6] = "Tageskarte Berlin BC";
-        tickets[7] = "Tageskarte Berlin ABC";
-        tickets[8] = "Kleingruppen-Tageskarte Berlin AB";
-        tickets[9] = "Kleingruppen-Tageskarte Berlin BC";
-        tickets[10] = "Kleingruppen-Tageskarte Berlin ABC";
-
-        double[] preis = new double[11];
-        preis[0] = 0;
-        preis[1] = 2.90;
-        preis[2] = 3.30;
-        preis[3] = 3.60;
-        preis[4] = 1.90;
-        preis[5] = 8.60;
-        preis[6] = 9.00;
-        preis[7] = 9.60;
-        preis[8] = 23.50;
-        preis[9] = 24.30;
-        preis[10] = 24.90;
 
         System.out.print("Fahrkartenbestellvorgang:\n" +
                 "=========================\n\n" +
                 "Wählen Sie ihre Wunschfahrkarte für Berlin AB aus:\n" +
                 "(0) Bezahlen\n");
 
-        for (int i = 1; i < tickets.length; i++) {
-            System.out.printf("(" + i + ") " + tickets[i] + " [%4.2f]\n", preis[i]);
+        for (HashMap.Entry<String, Double> e : Fahrkarten.entrySet()) {
+            System.out.println(e.getKey() + " = " + e.getValue());
         }
 
         // listen to keyboard input
@@ -83,7 +72,7 @@ public class Fahrkartenautomat {
             while (!tarifChecker) {
 
                 // ask user for the ticket type
-                System.out.print("Ihre Wahl (0-" + (tickets.length - 1) + "): ");
+                System.out.print("Ihre Wahl (0-" + (Fahrkarten.size()) + "): ");
 
                 // save ticket type from keyboard input in variable
                 tarif = tastatur.nextInt();
@@ -91,8 +80,13 @@ public class Fahrkartenautomat {
                 if (tarif == 0) {
                     comboChecker = true;
                     tarifChecker = true;
-                } else if (tarif > 0 && tarif < tickets.length) {
-                    zuZahlenderBetragTemp = preis[tarif];
+                } else if (tarif > 0 && tarif < Fahrkarten.size()) {
+                    for (HashMap.Entry<String, Double> e : Fahrkarten.entrySet()) {
+                        if (e.getKey().indexOf(String.valueOf(tarif)) != -1) {
+                            zuZahlenderBetragTemp = e.getValue();
+                            break;
+                        }
+                    }
                     tarifChecker = true;
                     System.out.println("Ihre Wahl: Tarif " + tarif);
                 } else {
